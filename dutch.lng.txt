@@ -1,0 +1,38 @@
+$lng['modules']['sasettings']['title'] = 'Spambeveiliging';
+
+$lng['modules']['sasettings']['globaltitle'] = 'Globale instellingen';
+$lng['modules']['sasettings']['domainstitle'] = 'Domein instellingen';
+$lng['modules']['sasettings']['preftitle'] = 'Beheer instellingen';
+
+$lng['modules']['sasettings']['overview'] = 'Sorry, deze functie is niet geimplementeerd.';
+
+$lng['modules']['sasettings']['domainstitlefor'] = 'Domein instellingen voor';
+$lng['modules']['sasettings']['rightsboxdescr'] = 'Mag de klant deze instelling zelf aanpassen?';
+$lng['modules']['sasettings']['showlongdescr'] = 'Toon een meer gedetaileerde omschrijving';
+$lng['modules']['sasettings']['back'] = 'ga terug';
+$lng['modules']['sasettings']['desc'] = 'Omschrijving';
+
+$lng['modules']['sasettings']['prefname'] = 'Naam van de instelling';
+$lng['modules']['sasettings']['prefused'] = 'actief';
+$lng['modules']['sasettings']['prefright'] = 'Aanpasbaar';
+$lng['modules']['sasettings']['usedboxdescr']= 'Moet deze instelling ingeschakeld worden?';
+
+$lng['modules']['sasettings']['prefedittype'] = 'Datatype van de instelling';
+$lng['modules']['sasettings']['maxsize'] = 'Als het datatype "string" is,<br />wat moet dan de maximale lengte zijn.';
+$lng['modules']['sasettings']['enum_settings'] = 'Als het datatype "enum" is, Voer hier dan de beschikbare waarden in<br />volgens de volgende opmaak \'Waarde1\',\'Waarde2\',..';
+$lng['modules']['sasettings']['desc_in_lang'] = 'Omschrijving in';
+$lng['modules']['sasettings']['desc_short'] = 'korte omschrijving';
+$lng['modules']['sasettings']['descinput'] = 'meer gedetaileerde omschrijving';
+$lng['modules']['sasettings']['deschtml'] = 'Gebruik html om de tekst op te maken!';
+
+$lng['modules']['sasettings']['addpref'] = 'Maak een nieuwe instelling';
+$lng['modules']['sasettings']['addprefinfo'] = 'beschikbare instellingen';
+$lng['modules']['sasettings']['prefaddname'] = 'Naam van de instelling';
+$lng['modules']['sasettings']['globalvalue'] = 'Globale standaardwaarde';
+$lng['modules']['sasettings']['globalright'] = 'Globale standaardwaarde aanpasbaar)';
+$lng['modules']['sasettings']['export'] = 'exporteren';
+
+
+$lng['question']['modules_sasettings_used'] = 'Weet je zeker dat je wilt opslaan?<br /><br />Als je een instelling deactiveerd, is zowel voor jou als de klanten mogelijk om deze te gebruiken en de door de klanten aangepaste waarden worden verwijderd.';
+$lng['error']['modules_sasettings_prefexist'] = 'deze instelling bestaat reeds!';
+$lng['error']['modules_sasettings_prefnull'] = 'Je dient een naam op te geven voor de instelling';

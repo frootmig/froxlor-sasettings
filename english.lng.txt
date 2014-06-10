@@ -1,0 +1,38 @@
+$lng['modules']['sasettings']['title'] = 'Spamprotection';
+
+$lng['modules']['sasettings']['globaltitle'] = 'Global defaults';
+$lng['modules']['sasettings']['domainstitle'] = 'Domain defaults';
+$lng['modules']['sasettings']['preftitle'] = 'Manage Preferences';
+
+$lng['modules']['sasettings']['overview'] = 'Sorry, this function is not yet implented.';
+
+$lng['modules']['sasettings']['domainstitlefor'] = 'Domain Defaults for';
+$lng['modules']['sasettings']['rightsboxdescr'] = 'May the customer change this preference on his own?';
+$lng['modules']['sasettings']['showlongdescr'] = 'show a more detailed description';
+$lng['modules']['sasettings']['back'] = 'go back';
+$lng['modules']['sasettings']['desc'] = 'Description';
+
+$lng['modules']['sasettings']['prefname'] = 'preference\'s name';
+$lng['modules']['sasettings']['prefused'] = 'active';
+$lng['modules']['sasettings']['prefright'] = 'customizeable';
+$lng['modules']['sasettings']['usedboxdescr']= 'Should this preference be used anyway?';
+
+$lng['modules']['sasettings']['prefedittype'] = 'the preference\'s datatype';
+$lng['modules']['sasettings']['maxsize'] = 'If your datatype is "string",<br />this would be the maximum length of the string.';
+$lng['modules']['sasettings']['enum_settings'] = 'If your datatype is "enum", insert here the available values <br />using the formating scheme \'Value1\',\'Value2\',..';
+$lng['modules']['sasettings']['desc_in_lang'] = 'Description in';
+$lng['modules']['sasettings']['desc_short'] = 'short description';
+$lng['modules']['sasettings']['descinput'] = 'more detailed description';
+$lng['modules']['sasettings']['deschtml'] = 'Use html to format your text!';
+
+$lng['modules']['sasettings']['addpref'] = 'Create a new preference';
+$lng['modules']['sasettings']['addprefinfo'] = 'available preferences';
+$lng['modules']['sasettings']['prefaddname'] = 'the preference\'s name';
+$lng['modules']['sasettings']['globalvalue'] = 'global defaultvalue';
+$lng['modules']['sasettings']['globalright'] = 'customizeable (global default)';
+$lng['modules']['sasettings']['export'] = 'export';
+
+
+$lng['question']['modules_sasettings_used'] = 'Do you really want to save?<br /><br />If you deactiviate a preference, it is neither for you nor for your customers possible to use it and all preference\'s values of your customers will be deleted.';
+$lng['error']['modules_sasettings_prefexist'] = 'This preference exists already!';
+$lng['error']['modules_sasettings_prefnull'] = 'You must fill in the preference name';

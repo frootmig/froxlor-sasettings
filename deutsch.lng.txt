@@ -1,0 +1,39 @@
+$lng['modules']['sasettings']['title'] = 'Spamprotection';
+
+$lng['modules']['sasettings']['globaltitle'] = 'Globale Standardeinstellungen';
+$lng['modules']['sasettings']['domainstitle'] = 'Domain-Standardeinstellungen';
+$lng['modules']['sasettings']['preftitle'] = 'Einstellungen';
+
+$lng['modules']['sasettings']['overview'] = 'Entschuldigung, diese Funktion wurde bisher nicht eingebaut.';
+
+$lng['modules']['sasettings']['domainstitlefor'] = 'Domain-Standardeinstellungen f&uuml;r';
+$lng['modules']['sasettings']['rightsboxdescr'] = 'Darf der Kunde diese Einstellung &auml;ndern?';
+$lng['modules']['sasettings']['showlongdescr'] = 'Detaillierte Beschreibung anzeigen';
+$lng['modules']['sasettings']['back'] = 'zur&uuml;ck';
+$lng['modules']['sasettings']['desc'] = 'Beschreibung';
+
+$lng['modules']['sasettings']['prefname'] = 'Name der Einstellung';
+$lng['modules']['sasettings']['prefused'] = 'Aktiv';
+$lng['modules']['sasettings']['prefright'] = 'anpassbar';
+$lng['modules']['sasettings']['usedboxdescr']= 'Soll diese Einstellung verwendet werden?';
+
+$lng['modules']['sasettings']['prefedittype'] = 'Datentyp der Einstellung';
+$lng['modules']['sasettings']['maxsize'] = 'Wenn Ihr Datentyp "string" ist,<br />geben Sie nun den Maximalwert an.';
+$lng['modules']['sasettings']['enum_settings'] = 'Wenn Ihr Datentyp "enum" ist, geben Sie nun die verf&uuml;gbaren Werte mit folgendem Schema <br />\'Value1\',\'Value2\',.. an.';
+$lng['modules']['sasettings']['desc_in_lang'] = 'Beschreibung in';
+$lng['modules']['sasettings']['desc_short'] = 'Kurze Beschreibung';
+$lng['modules']['sasettings']['descinput'] = 'Detaillierte Beschreibung';
+$lng['modules']['sasettings']['deschtml'] = 'Benutzen Sie HTML um Ihren Text zu formatieren!';
+
+$lng['modules']['sasettings']['addpref'] = 'Neue Einstellung setzen';
+$lng['modules']['sasettings']['addprefinfo'] = 'Verf&uuml;gbare Einstellungen';
+$lng['modules']['sasettings']['prefaddname'] = 'Name der Einstellung';
+$lng['modules']['sasettings']['globalvalue'] = 'Globaler Standardwert';
+$lng['modules']['sasettings']['globalright'] = 'Anpassbar (globaler Standard)';
+$lng['modules']['sasettings']['export'] = 'exportierten';
+
+
+$lng['question']['modules_sasettings_used'] = 'M&ouchten Sie dies nun wirklich speichern?<br /><br />Wenn Sie eine Einstellung deaktivieren, ist es weder f&uuml;r Sie noch f&uuml;r Ihre Kunden m&ouml;glich, diese zu benutzen. Alle Einstellungen Ihrer Kunden werden gel&ouml;scht.';
+$lng['error']['modules_sasettings_prefexist'] = 'Diese Einstellung existiert bereits!';
+$lng['error']['modules_sasettings_prefnull'] = 'Sie m&uuml;ssen den Namen der Einstellungen angeben!';
+                                                                                                                       

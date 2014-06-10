@@ -35,7 +35,7 @@
 	
 	if(($page == "domains" || $page == "overview") && $action == "")
 	{	eval("echo \"".getTemplate("modules/sasettings/domains_top")."\";");
-		$result=$db->query(
+		$result=Database::query(
 			'SELECT `id`, `domain` '.
 			'FROM `'.TABLE_PANEL_DOMAINS.'` '.
 			'WHERE `customerid`="'.$userinfo['customerid'].'" '.
@@ -43,19 +43,20 @@
 			'AND `deactivated`="0" '.
 			'ORDER BY `domain` ASC'
 		);	
-		while($row=$db->fetch_array($result))
+		while($row=$result->fetch(PDO::FETCH_ASSOC))
 		{	eval("echo \"".getTemplate("modules/sasettings/domains_main")."\";");
 		}
 		eval("echo \"".getTemplate("modules/sasettings/domains_bottom")."\";");
 	}
 	elseif($page == "domains" && $action == "edit")
-	{	$result=$db->query_first(
+	{	$result=Database::query(
 			'SELECT `domain` FROM `'.TABLE_PANEL_DOMAINS.'` '.
 			'WHERE `id` = "'.$id.'" '.
 			'AND `customerid`="'.$userinfo['customerid'].'" '.
 			'AND `isemaildomain`="1" '.
 			'AND `deactivated`="0" '		
 		);
+		$result=$result->fetch(PDO::FETCH_ASSOC);
 		if(!isset($result['domain']))
 		{	die("Error. You can't edit the settings for this domain.");
 		}

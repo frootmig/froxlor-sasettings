@@ -67,7 +67,7 @@
 	elseif($page == "domains" && $action == "")
 	{	eval("echo \"".getTemplate("modules/sasettings/domains_top")."\";");
 		if($userinfo['change_serversettings'] != '1')
-		{	$result=$db->query(
+		{	$result=Database::query(
 				'SELECT `id`, `domain` FROM `'.TABLE_PANEL_DOMAINS.'` '.
 				'WHERE `isemaildomain`="1" '.
 				'AND `deactivated`="0" '.
@@ -76,25 +76,27 @@
 			);
 		}
 		else
-		{	$result=$db->query(
+		{	$result=Database::query(
 				'SELECT `id`, `domain` FROM `'.TABLE_PANEL_DOMAINS.'` '.
 				'WHERE `isemaildomain`="1" '.
 				'AND `deactivated`="0" '.
 				'ORDER BY `domain` ASC'
 			);
 		}
-		while($row=$db->fetch_array($result))
+		
+		while($row=$result->fetch(PDO::FETCH_ASSOC))
 		{	eval("echo \"".getTemplate("modules/sasettings/domains_main")."\";");
 		}
 		eval("echo \"".getTemplate("modules/sasettings/domains_bottom")."\";");
 	}
 	elseif($page == "domains" && $action == "edit")
-	{	$result=$db->query_first(
+	{	$result=Database::query(
 			'SELECT `domain`,`adminid` FROM `'.TABLE_PANEL_DOMAINS.'` '.
 			'WHERE `id` = "'.$id.'"'.
 			'AND `isemaildomain`="1" '.
 			'AND `deactivated`="0" '
 		);
+		$result = $result->fetch(PDO::FETCH_ASSOC);
 		if((!isset($result['domain']))||($userinfo['change_serversettings'] != '1' && $result['adminid']!=$userinfo['adminid']))
 		{	die("Error. You can't edit the settings for this domain.");
 		}
@@ -130,7 +132,7 @@
 	   	{	$order="preferencename";
 	   	}
 	   }
-   	$result=$db->query(
+   	$result=Database::query(
 		   'SELECT `p`.*, `sa`.*, `r`.`available` '.
 			'FROM `'.TABLE_MODULES_SASETTINGS_PREFERENCES.'` `p` '.
 			'LEFT JOIN `'.TABLE_MODULES_SASETTINGS_SA.'` `sa` '.
@@ -141,9 +143,9 @@
 			'`r`.`domainid`="0") '.					
 			'ORDER BY `p`.`'.$order.'` ASC'
 		);
-		$numprefs=$db->num_rows($result);
+		$numprefs=Database::num_rows($result);
 		eval("echo \"".getTemplate("modules/sasettings/pref_top")."\";");
-		while($row=$db->fetch_array($result))
+		while($row=$result->fetch(PDO::FETCH_ASSOC))
 		{	$descs=getDescription($row['preferenceid'],$language);
 			$descr=prepareDescription($descs['desc_long']);
 			if($row['used']=="Y")
@@ -166,7 +168,7 @@
    	{	Exit;
    	}    
    	//show form
-   	$row=$db->query_first(
+   	$row=Database::query(
 		   'SELECT `p`.*, `d`.* '.
 			'FROM `'.TABLE_MODULES_SASETTINGS_PREFERENCES.'` `p` '.
 			'LEFT JOIN `'.TABLE_MODULES_SASETTINGS_DESC.'` `d` '.
@@ -174,6 +176,7 @@
 			'AND `d`.`language`="'.$language.'") '.		
 			'WHERE `p`.`preferenceid`="'.$id.'"'
 		);
+	$row=$row->fetch(PDO::FETCH_ASSOC);
    	$descr=prepareDescription($row['desc_long']);
    	if($row['used']=="Y")
 		{	$used='checked="checked"';
@@ -186,13 +189,13 @@
 		$optionTags=getOptionTags($row['type']);
    	eval("echo \"".getTemplate("modules/sasettings/pref_edit_top")."\";");
    	//output the form for editing the descriptions in all languages
-   	$result=$db->query(
+   	$result=Database::query(
    		'SELECT * '.
 			'FROM `'.TABLE_MODULES_SASETTINGS_DESC.'` '.
 			'WHERE `preferenceid`="'.$id.'" '.
 			'ORDER BY `language` ASC'
 		);
-		while($row=$db->fetch_array($result))
+		while($row=$result->fetch(PDO::FETCH_ASSOC))
 		{	$descr=prepareDescription($row['desc_long']);
 			$desc=htmlentities($row['desc_long'],ENT_NOQUOTES);
 			eval("echo \"".getTemplate("modules/sasettings/pref_edit_main")."\";");
@@ -205,11 +208,12 @@
    	{	Exit;
    	}
    	if(($_POST['send']=='sendfirst'||$_POST['send']=='send'))
-   	{ 	$row=$db->query_first(
+   	{ 	$row=Database::query(
 			   'SELECT * '.
 				'FROM `'.TABLE_MODULES_SASETTINGS_PREFERENCES.'` '.		
 				'WHERE `preferenceid`="'.$id.'"'
 			);
+		$row = $row->fetch(PDO::FETCH_ASSOC);
    		if((!isset($_POST['used']))&&$row['used']=='Y'&&$_POST['send']=='sendfirst')
    		{	//build the string of variables for ask_yesno()
    			$var="page=$page;action=$action;id=$id;";
@@ -225,7 +229,7 @@
 						if($row['used']=='Y')
 						{	deleteNotUsedValues($row['preferencename']);
 						}
-						$db->query(
+						Database::query(
 							'UPDATE `'.TABLE_MODULES_SASETTINGS_PREFERENCES.'` '.
 							'SET `used`="'.$used.'" '.
 							'WHERE `preferenceid`="'.$id.'"'
@@ -248,12 +252,12 @@
 							$globalvalue=escape(verifyVar($type,$globalvalue,$maxsize,$enum_settings));
 							$globalright = (isset($_POST['globalright'])&& $_POST['globalright']=='Y')?"Y":"N";
 
-							$db->query(
+							Database::query(
 								'INSERT INTO `'.TABLE_MODULES_SASETTINGS_RIGHTS.'` '.
 								'(`domainid`,`preferenceid`,`available`) '.
 								'VALUES("0","'.$id.'","'.$globalright.'") '
 							);
-							$db->query(
+							Database::query(
 								'INSERT INTO `'.TABLE_MODULES_SASETTINGS_SA.'` '.
 								'(`username`,`preference`,`value`) '.
 								'VALUES("$GLOBAL","'.$row['preferencename'].'","'.$globalvalue.'") '
@@ -263,7 +267,7 @@
 							addValues($row['preferencename'],$id);
 						}
 
-						$db->query(
+						Database::query(
 							'UPDATE `'.TABLE_MODULES_SASETTINGS_PREFERENCES.'` '.
 							'SET `used`="'.$used.'", '.
 							'`type`="'.$type.'", '.
@@ -273,19 +277,19 @@
 						);
 		
 						//ok then update languages
-				   	$result=$db->query(
+				   	$result=Database::query(
 				   		'SELECT * '.
 							'FROM `'.TABLE_MODULES_SASETTINGS_DESC.'` '.
 							'WHERE `preferenceid`="'.$id.'" '
 						);
-						while($row=$db->fetch_array($result))
+						while($row=$result->fetch(PDO::FETCH_ASSOC))
 						{	$desc_short=escape(
 												substr(
 													htmlentities($_POST[$row['language']."_desc_short"])
 												,0,30)
 											);			
 							$desc=escape($_POST[$row['language']."_desc"]);
-							$db->query(
+							Database::query(
 								'UPDATE `'.TABLE_MODULES_SASETTINGS_DESC.'` '.
 								'SET `desc_short`="'.$desc_short.'", '.
 								'`desc_long`="'.$desc.'" '.
@@ -326,11 +330,12 @@
    	//add the new preference
 		$preferencename=escape(substr($_POST['preferencename'],0,50));
 		//existiert das preference bereits?
-		$row=$db->query_first(
+		$row=Database::query(
 			'SELECT * '.
 			'FROM `'.TABLE_MODULES_SASETTINGS_PREFERENCES.'` '.
 			'WHERE `preferencename`="'.$preferencename.'" '
 		);
+		$row=$row->fetch(PDO::FETCH_ASSOC);
 		if(isset($row['preferenceid']))
 		{	standard_error('modules_sasettings_prefexist');
 			Exit;
@@ -354,7 +359,7 @@
 		{	$used="Y";
 		}
 		//insert the preference
-		$db->query(
+		Database::query(
 			'INSERT INTO `'.TABLE_MODULES_SASETTINGS_PREFERENCES.'` '.
 			'(`used`,`type`,`maxsize`,`enum_settings`,`preferenceid`,`preferencename`) '.
 			'VALUES("'.$used.'","'.$type.'","'.$maxsize.'","'.$enum_settings.
@@ -376,12 +381,12 @@
 			else
 			{	$globalright="N";
 			}
-			$db->query(
+			Database::query(
 				'INSERT INTO `'.TABLE_MODULES_SASETTINGS_RIGHTS.'` '.
 				'(`domainid`,`preferenceid`,`available`) '.
 				'VALUES("0","'.$preferenceid.'","'.$globalright.'") '
 			);
-			$db->query(
+			Database::query(
 				'INSERT INTO `'.TABLE_MODULES_SASETTINGS_SA.'` '.
 				'(`username`,`preference`,`value`) '.
 				'VALUES("$GLOBAL","'.$preferencename.'","'.$globalvalue.'") '
@@ -398,7 +403,7 @@
 								,0,30)
 							);			
 			$desc=escape($_POST[$language_name."_desc"]);
-			$db->query(
+			Database::query(
 				'INSERT INTO `'.TABLE_MODULES_SASETTINGS_DESC.'` '.
 				'(`preferenceid`,`desc_short`,`desc_long`,`language`) '.
 				'VALUES("'.$preferenceid.'","'.$desc_short.'","'.$desc.
@@ -415,11 +420,12 @@
    {	if($userinfo['change_serversettings'] != '1')
    	{	Exit;
    	}
-   	$result=$db->query_first(
+   	$result=Database::query(
 		   'SELECT `preferencename` '.
 			'FROM `'.TABLE_MODULES_SASETTINGS_PREFERENCES.'` '.
 			'WHERE `preferenceid`="'.$id.'"'
 		);
+		$result=$result->fetch(PDO::FETCH_ASSOC);
 		if(isset($result['preferencename']))
 		{ 	$export=exportPreference($id);
 			eval("echo \"".getTemplate("modules/sasettings/pref_export")."\";");

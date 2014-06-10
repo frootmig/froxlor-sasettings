@@ -21,12 +21,13 @@
 	 * @author Wolfgang Ziegler <nuppla@gmx.at>
 	 */
 	function getDescription($id,$language)
-	{		global $db;
-			$row=$db->query_first(
+	{
+			$row=Database::query(
 				'SELECT `desc_long`,`desc_short` FROM `'.TABLE_MODULES_SASETTINGS_DESC.'` '.
 				'WHERE `preferenceid`="'.$id.'" '.
 				'AND `language`="'.$language.'" '
 			);
+			$row=$row->fetch(PDO::FETCH_ASSOC);
 			if($language!="English")
 			{	foreach($row as $key => $foo)
 				{	if($foo=="")
@@ -45,12 +46,13 @@
 	 * @author Wolfgang Ziegler <nuppla@gmx.at>
 	 */
 	function showEditForm($domain)
-	{ 	global $db, $tpl, $userinfo, $s, $header, $footer, $lng, $page, $action, $id, $language, $filename;
+	{ 	global $tpl, $userinfo, $s, $header, $footer, $lng, $page, $action, $id, $language, $filename;
 		if($domain != "\$GLOBAL")
-		{	$result=$db->query_first(
+		{	$result=Database::query(
             'SELECT * FROM `'.TABLE_MODULES_SASETTINGS_RIGHTS.'` '.
             'WHERE `domainid`="'.$id.'"'
          );
+			$result=$result->fetch(PDO::FETCH_ASSOC);
 			verifyAll($domain,$id);
 			//Load per domain preferences
 			if(AREA == "admin")
@@ -81,7 +83,7 @@
 					'AND `r`.`available`="Y" '.
 					'ORDER BY `p`.`preferencename` ASC';
 			}
-			$result=$db->query($query);
+			$result=Database::query($query);
 		}
 		else
 		{	$query=
@@ -95,9 +97,9 @@
 				'`r`.`domainid`="0") '.		
 				'WHERE `p`.`used`="Y" '.
 				'ORDER BY `p`.`preferencename` ASC';
-			$result=$db->query($query);
+			$result=Database::query($query);
 		}
-		$numprefs=$db->num_rows($result);
+		$numprefs=Database::num_rows($result);
 		eval("echo \"".getTemplate("modules/sasettings/edit_top")."\";");
 		if($domain == "\$GLOBAL")
 		{	eval("echo \"".getTemplate("modules/sasettings/edit_globaltitle")."\";");
@@ -105,7 +107,7 @@
 		else
 		{	eval("echo \"".getTemplate("modules/sasettings/edit_domaintitle")."\";");
 		}
-		while($row=$db->fetch_array($result))
+		while($row=$result->fetch(PDO::FETCH_ASSOC))
 		{	$descs=getDescription($row['preferenceid'],$language);
 			$descr=prepareDescription($descs['desc_long']);
 			if(AREA=="admin")
@@ -170,7 +172,7 @@
 	 * @author Wolfgang Ziegler <nuppla@gmx.at>
 	 */	 
 	function saveValues($domain)
-	{	global $db,$_POST,$id;
+	{	global $_POST,$id;
 		if($domain!="\$GLOBAL")
 		{	$domain="%".$domain;
 		}
@@ -190,14 +192,14 @@
 				'WHERE `p`.`used`="Y" '.
 				'AND `r`.`available`="Y"';
 		}
-		$result=$db->query($query);
-		while($row=$db->fetch_array($result))
+		$result=Database::query($query);
+		while($row=$result->fetch(PDO::FETCH_ASSOC))
 		{	if(!isset($_POST[$row['preferencename']]))
 			{	$_POST[$row['preferencename']]=0;
 			}
 			$value=verifyVar($row['type'],$_POST[$row['preferencename']],$row['maxsize'],$row['enum_settings']);
 			//now store $value
-			$db->query(
+			Database::query(
 				'UPDATE `'.TABLE_MODULES_SASETTINGS_SA.'` '.
 				'SET `value`="'.$value.'" '.
 				'WHERE `preference`="'.$row['preferencename'].'" AND '.
@@ -211,7 +213,7 @@
 				else
 				{	$value="N";
 				}
-				$db->query(
+				Database::query(
 					'UPDATE `'.TABLE_MODULES_SASETTINGS_RIGHTS.'` '.
 					'SET `available`="'.$value.'" '.
 					'WHERE `preferenceid`="'.$row['preferenceid'].'" AND '.
@@ -229,20 +231,20 @@
 	 * @author Wolfgang Ziegler <nuppla@gmx.at>
 	 */	 
 	function setDefaultRights($domainid)
-	{	global $db;
+	{
 		//delete existing rights
-		$db->query(
+		Database::query(
 			'DELETE FROM `'.TABLE_MODULES_SASETTINGS_RIGHTS.'` '.
 			'WHERE `domainid`="'.$domainid.'"'
 		);
 		//get default rights
-		$result=$db->query(
+		$result=Database::query(
 			'SELECT * FROM `'.TABLE_MODULES_SASETTINGS_RIGHTS.'` '.
 			'WHERE `domainid`="0"'
 		);
-		while($row=$db->fetch_array($result))
+		while($row=$result->fetch(PDO::FETCH_ASSOC))
 		{	//save rights
-			$db->query(
+			Database::query(
 				'INSERT INTO `'.TABLE_MODULES_SASETTINGS_RIGHTS.'` '.
 				'(`domainid`,`preferenceid`,`available`) '.
 				'VALUES("'.$domainid.'","'.$row['preferenceid'].
@@ -260,12 +262,13 @@
 	 * @author Wolfgang Ziegler <nuppla@gmx.at>
 	 */	 
 	function showDetailedDescription($preferenceid)
-	{	global $db, $tpl, $userinfo, $s, $header, $footer, $lng, $page, $action, $id, $language, $filename;
-		$result=$db->query_first(
+	{	global $tpl, $userinfo, $s, $header, $footer, $lng, $page, $action, $id, $language, $filename;
+		$result=Database::query(
 		   'SELECT `p`.* '.
 			'FROM `'.TABLE_MODULES_SASETTINGS_PREFERENCES.'` `p` '.
 			'WHERE `p`.`preferenceid`="'.$preferenceid.'"'
 		);
+		$result=$result->fetch(PDO::FETCH_ASSOC);
 		$descs=getDescription($preferenceid,$language);
 		eval("echo \"".getTemplate("modules/sasettings/edit_showdescr")."\";");
 	}
@@ -335,39 +338,42 @@
 	 * @author Wolfgang Ziegler <nuppla@gmx.at>
 	 */	 
 	function verifyAll($domain,$domainid)
-   { 	global $db;
-   	$result=$db->query(
+   { 	
+   	$result=Database::query(
 		   'SELECT * '.
 			'FROM `'.TABLE_MODULES_SASETTINGS_PREFERENCES.'` '.		
 			'WHERE `used`="Y"'
 		);
-		while($row=$db->fetch_array($result))
-		{	$info=$db->query_first(
+		while($row=$result->fetch(PDO::FETCH_ASSOC))
+		{	$info=Database::query(
 			   'SELECT * '.
 				'FROM `'.TABLE_MODULES_SASETTINGS_RIGHTS.'` '.		
 				'WHERE `preferenceid`="'.$row['preferenceid'].'" '.
 				'AND `domainid`="'.$domainid.'" '
 			);
+			$info=$info->fetch(PDO::FETCH_ASSOC);
 			if(!isset($info['available']))
 			{	//this preference is missing, so insert it
-				$default=$db->query_first(
+				$default=Database::query(
 					'SELECT * FROM `'.TABLE_MODULES_SASETTINGS_SA.'` '.
 					'WHERE `username`="$GLOBAL" '.
 					'AND `preference`="'.$row['preferencename'].'" '
 				);
-				$db->query(
+				$default=$default->fetch(PDO::FETCH_ASSOC);
+				Database::query(
 					'INSERT INTO `'.TABLE_MODULES_SASETTINGS_SA.'` '.
 					'(`username`,`preference`,`value`) '.
 					'VALUES("%'.$domain.'","'.$row['preferencename'].
 					'","'.$default['value'].'")'
 				);
 				//and insert the according preference right
-				$default=$db->query_first(
+				$default=Database::query(
 					'SELECT * FROM `'.TABLE_MODULES_SASETTINGS_RIGHTS.'` '.
 					'WHERE `domainid`="0" '.
 					'AND `preferenceid`="'.$row['preferenceid'].'" '
 				);
-				$db->query(
+				$default=$default->fetch(PDO::FETCH_ASSOC);
+				Database::query(
 					'INSERT INTO `'.TABLE_MODULES_SASETTINGS_RIGHTS.'` '.
 					'(`domainid`,`preferenceid`,`available`) '.
 					'VALUES("'.$domainid.'","'.$row['preferenceid'].

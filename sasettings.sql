@@ -1,6 +1,6 @@
 
 -- 
--- Tabellenstruktur für Tabelle `modules_sasettings_desc`
+-- Tabellenstruktur fï¿½r Tabelle `modules_sasettings_desc`
 -- 
 
 DROP TABLE IF EXISTS `modules_sasettings_desc`;
@@ -10,12 +10,12 @@ CREATE TABLE `modules_sasettings_desc` (
   `desc_short` varchar(30) NOT NULL default '',
   `desc_long` mediumtext NOT NULL,
   PRIMARY KEY  (`preferenceid`,`language`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
 -- 
--- Tabellenstruktur für Tabelle `modules_sasettings_preferences`
+-- Tabellenstruktur fï¿½r Tabelle `modules_sasettings_preferences`
 -- 
 
 DROP TABLE IF EXISTS `modules_sasettings_preferences`;
@@ -29,13 +29,13 @@ CREATE TABLE `modules_sasettings_preferences` (
   PRIMARY KEY  (`preferenceid`),
   UNIQUE KEY `preference-name` (`preferencename`),
   KEY `used` (`used`)
-) TYPE=MyISAM AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM AUTO_INCREMENT=6 ;
 
 
 -- --------------------------------------------------------
 
 -- 
--- Tabellenstruktur für Tabelle `modules_sasettings_rights`
+-- Tabellenstruktur fï¿½r Tabelle `modules_sasettings_rights`
 -- 
 
 DROP TABLE IF EXISTS `modules_sasettings_rights`;
@@ -44,13 +44,13 @@ CREATE TABLE `modules_sasettings_rights` (
   `preferenceid` int(11) unsigned NOT NULL default '0',
   `available` enum('Y','N') NOT NULL default 'Y',
   PRIMARY KEY  (`domainid`,`preferenceid`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 
 -- --------------------------------------------------------
 
 -- 
--- Tabellenstruktur für Tabelle `modules_sasettings_sa`
+-- Tabellenstruktur fï¿½r Tabelle `modules_sasettings_sa`
 -- 
 
 DROP TABLE IF EXISTS `modules_sasettings_sa`;
@@ -59,4 +59,4 @@ CREATE TABLE `modules_sasettings_sa` (
   `preference` varchar(30) NOT NULL default '',
   `value` varchar(100) NOT NULL default '',
   PRIMARY KEY  (`username`,`preference`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
